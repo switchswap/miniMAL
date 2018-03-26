@@ -1,13 +1,13 @@
 # miniMAL
 Reddit flair stats and other goodies for /r/Anime
 
-# Features
+### Features
 -Turn flairs into links
 -Show user stats
 -Show shared anime
 
-# Planned
+### Planned
 -Show scrollable window of user's list
 
-# Status
+### Status
 -Currently in faster development now that I have more time
