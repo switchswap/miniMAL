@@ -1,15 +1,19 @@
 # miniMAL
 Reddit flair stats and other goodies for /r/Anime
 
-### Features
--Turn flairs into links
+## Features
+- Turn flairs into links 
+- Show user stats 
+- Show shared anime 
 
--Show user stats
+## Planned
+- Show scrollable window of user's list
 
--Show shared anime
+## Install
+1. Make sure you have a userscript manager add-on for your broswer like Tampermonkey or Greasemonkey.
+2. Click [here](https://github.com/TrickRoom/miniMAL/raw/master/rMiniMAL.js) to install!
+3. All set!
 
-### Planned
--Show scrollable window of user's list
 
-### Status
+## Status
 -Currently in faster development now that I have more time
