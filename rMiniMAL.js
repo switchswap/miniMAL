@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name         /r/Anime+
-// @namespace    /r/anime
+// @name         MiniMAL
+// @namespace    rMiniMal
 // @version      0.1
 // @description  Adds some goodies to /r/anime
 // @author       TrickRoom
@@ -204,12 +204,14 @@ function setToolTip(flair) {
         var newInfoBox = document.createElement("div");
         newInfoBox.innerHTML = html;
         document.body.firstChild.parentNode.insertBefore(newInfoBox,document.body.firstChild);
+        console.log("made an info box");
     }
     flair.firstChild.onmouseover = function(){
         //position box, get data, and append it
         infoBox.style.top= getPosition(this).y - 20 +"px";
         infoBox.style.left= getPosition(this).x +"px";
         infoBox.style.display = "block";
+        infoBox.innerHTML = "<center><img src='https://i.imgur.com/Ykoy5.gif' width='50%'/></center>"
 
         //get the info and add it to the box
         if(g_fetchInfo && g_fetchShared && g_malName!=""){ //both enabled
@@ -221,6 +223,7 @@ function setToolTip(flair) {
                     var t = document.createTextNode("W:"+resp[0][1]+" C:"+resp[0][2]+" H:"+resp[0][3]+" D:"+resp[0][4]+" P:"+resp[0][5] +" T:"+resp[0][6]+"d S:"+resp[1].length);
                     p.appendChild(t);
                     console.log(p);
+                    infoBox.innerHTML = ""
                     infoBox.appendChild(p);
                 });
             }
@@ -234,6 +237,7 @@ function setToolTip(flair) {
                     var t = document.createTextNode("W:"+resp[1]+" C:"+resp[2]+" H:"+resp[3]+" D:"+resp[4]+" P:"+resp[5] +" T:"+resp[6]+"d");
                     p.appendChild(t);
                     console.log(p);
+                    infoBox.innerHTML = ""
                     infoBox.appendChild(p);
 
                 });
@@ -248,6 +252,7 @@ function setToolTip(flair) {
                     var t = document.createTextNode("Shared:"+resp.length);
                     p.appendChild(t);
                     console.log(p);
+                    infoBox.innerHTML = ""
                     infoBox.appendChild(p);
                 });
             }
@@ -256,7 +261,7 @@ function setToolTip(flair) {
     flair.firstChild.onmouseout = function(){
         //hide the box
         infoBox.style.display = "none";
-        infoBox.innerHTML = html;
+        infoBox.innerHTML = "";
 
     };
 }
