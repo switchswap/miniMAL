@@ -11,7 +11,7 @@ Reddit flair stats and other goodies for /r/Anime
 
 ## Install
 1. Make sure you have a userscript manager add-on for your broswer like Tampermonkey or Greasemonkey.
-2. Click [here](https://github.com/TrickRoom/miniMAL/raw/master/rMiniMAL.js) to install!
+2. Click [here](https://github.com/TrickRoom/miniMAL/raw/master/rMiniMAL.user.js) to install!
 3. All set!
 
 
