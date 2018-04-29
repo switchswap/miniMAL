@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MiniMAL
 // @namespace    rMiniMal
-// @version      0.1
+// @version      1.0
 // @description  Adds some goodies to /r/anime
 // @author       TrickRoom
 // @include     *reddit.com/r/anime*
@@ -19,18 +19,18 @@
 // * Turns URLs in user flairs to clickable links
 // ~      ~~~~      ~
 
-//onPageLoad
-
+//On Page Load
 setupConfig();
 makeStyleSheet();
 clickify();
-//todo: make the frame to display the stats and ur good
 
 //main functions
 function setupConfig() {
+    var frame = document.createElement('div');
+    document.body.appendChild(frame);
     GM_config.init({
-        "id": "rapConf",
-        "title": "/r/Anime+ Settings",
+        "id": "rmConf",
+        "title": "MiniMal Settings",
         "fields":
         {
             "fetchInfo": {
@@ -55,14 +55,21 @@ function setupConfig() {
                 "type": "checkbox",
                 "default": false
             },
+            "miniList": {
+                "label": "Include a mini animelist in tooltip",
+                "type": "checkbox",
+                "default": false
+            },
             "debug": {
                 "label": "Debug mode",
                 "type": "checkbox",
                 "default": false
             }
         },
-        "css": "#rapConf { background-color: #F6F6FE !important; }" +
-        "#rapConf .config_header { color: #369 !important; }"
+        "css": "#rmConf { background-color: #F6F6FE !important;}" +
+        "#rmConf.config_header { color: #369 !important; }" +
+        "#rmConf_section_0 { display: none !important; }",
+        //"frame": frame
     });
 
     g_fetchInfo = GM_config.get("fetchInfo");
@@ -71,7 +78,7 @@ function setupConfig() {
     g_includePTW = GM_config.get("includePTW");
     g_debug = GM_config.get("debug");
 
-    GM_registerMenuCommand("Open settings", function(){ GM_config.open(); }, "s");
+    GM_registerMenuCommand("Open settings", function(){ GM_config.open(); resizeSettings()}, "s");
     GM_registerMenuCommand("Open github repo", function(){ GM_openInTab("hello:"); }, "g");
 }
 
@@ -89,6 +96,13 @@ function makeStyleSheet() {
     );
 }
 
+function resizeSettings(){
+    var frame = document.getElementsByTagName("iframe").namedItem("rmConf");
+    frame.style.height= "30%";
+    frame.style.width= "25%";
+    if(g_debug) console.log(frame);
+}
+
 function clickify(){
     var flairs = document.getElementsByClassName("flair");
     //if(g_debug) console.log("Found " + flairs.length + " flairs.");
@@ -100,7 +114,7 @@ function clickify(){
             //if(g_debug) console.log("Found URL: " + flairText);
             linkFlairs.push(flairText);
             toLink(flairs[i]);
-            if(g_fetchInfo || g_fetchShared) setToolTip(flairs[i]);
+            if((g_fetchInfo || g_fetchShared)&& flairText.search("^https?://myanimelist")!=-1) setToolTip(flairs[i]);
         }
     }
 }
@@ -166,6 +180,7 @@ function onPageLoad(resp){
     var statsArr=[];
     var parser = new DOMParser();
     var xmlDoc = parser.parseFromString(resp,"text/xml");
+    console.log(resp);
     if(g_fetchInfo){
         var domStats = xmlDoc.getElementsByTagName("myinfo")[0];
         statsArr.push(domStats.getElementsByTagName("user_name")[0].innerHTML);
@@ -200,6 +215,7 @@ function setToolTip(flair) {
     var infoBox = document.getElementById('anime-infoBox');
     var html = "<div id='anime-infoBox' style='display:none';></div>";
     var name;
+    var timeout;
     if(infoBox==null){
         var newInfoBox = document.createElement("div");
         newInfoBox.innerHTML = html;
@@ -223,8 +239,10 @@ function setToolTip(flair) {
                     var t = document.createTextNode("W:"+resp[0][1]+" C:"+resp[0][2]+" H:"+resp[0][3]+" D:"+resp[0][4]+" P:"+resp[0][5] +" T:"+resp[0][6]+"d S:"+resp[1].length);
                     p.appendChild(t);
                     console.log(p);
-                    infoBox.innerHTML = ""
-                    infoBox.appendChild(p);
+                    infoBox.innerHTML = "";
+                    infoBox.appendChild(p);})
+                    .catch(function(err) {
+                    console.log("prblemo"); // some coding error in handling happened
                 });
             }
         }
@@ -237,7 +255,7 @@ function setToolTip(flair) {
                     var t = document.createTextNode("W:"+resp[1]+" C:"+resp[2]+" H:"+resp[3]+" D:"+resp[4]+" P:"+resp[5] +" T:"+resp[6]+"d");
                     p.appendChild(t);
                     console.log(p);
-                    infoBox.innerHTML = ""
+                    infoBox.innerHTML = "";
                     infoBox.appendChild(p);
 
                 });
@@ -252,13 +270,25 @@ function setToolTip(flair) {
                     var t = document.createTextNode("Shared:"+resp.length);
                     p.appendChild(t);
                     console.log(p);
-                    infoBox.innerHTML = ""
+                    infoBox.innerHTML = "";
                     infoBox.appendChild(p);
                 });
             }
         }
+        timeout = setTimeout(function(){
+            if(infoBox.innerHTML=="<center><img src=\"https://i.imgur.com/Ykoy5.gif\" width=\"50%\"></center>"){
+               var p = document.createElement("P");
+               var t = document.createTextNode("N/A");
+               p.appendChild(t);
+               console.log(p);
+               infoBox.innerHTML = "";
+               infoBox.appendChild(p);
+            }
+        }, 5000);
     };
     flair.firstChild.onmouseout = function(){
+        //clear timeout
+        clearTimeout(timeout);
         //hide the box
         infoBox.style.display = "none";
         infoBox.innerHTML = "";
