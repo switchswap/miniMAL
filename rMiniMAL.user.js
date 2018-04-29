@@ -17,6 +17,8 @@
 
 // ~ ~~ Features ~~ ~
 // * Turns URLs in user flairs to clickable links
+// * Show user's anime list stats
+// * Show number of shared anime
 // ~      ~~~~      ~
 
 //On Page Load
@@ -79,7 +81,7 @@ function setupConfig() {
     g_debug = GM_config.get("debug");
 
     GM_registerMenuCommand("Open settings", function(){ GM_config.open(); resizeSettings()}, "s");
-    GM_registerMenuCommand("Open github repo", function(){ GM_openInTab("hello:"); }, "g");
+    GM_registerMenuCommand("Open github repo", function(){ GM_openInTab("https://github.com/TrickRoom/miniMAL"); }, "g");
 }
 
 function makeStyleSheet() {
@@ -242,7 +244,6 @@ function setToolTip(flair) {
                     infoBox.innerHTML = "";
                     infoBox.appendChild(p);})
                     .catch(function(err) {
-                    console.log("prblemo"); // some coding error in handling happened
                 });
             }
         }
