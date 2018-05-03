@@ -6,6 +6,10 @@ Reddit flair stats and other goodies for /r/Anime
 - Show user stats 
 - Show shared anime 
 
+## Screenshots
+![shared](https://i.imgur.com/LEoAptP.png)
+![userStats](https://i.imgur.com/F8y0Wyc.png)
+
 ## Planned
 - Show scrollable window of user's list
 
