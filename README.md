@@ -1,4 +1,4 @@
-# miniMAL
+# miniMAL [Defunct: MAL API is no more.]
 Reddit flair stats and other goodies for /r/Anime
 
 ## Features
